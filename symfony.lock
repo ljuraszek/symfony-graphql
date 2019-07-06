@@ -153,6 +153,20 @@
     "ocramius/proxy-manager": {
         "version": "2.2.2"
     },
+    "overblog/graphql-bundle": {
+        "version": "0.12",
+        "recipe": {
+            "repo": "github.com/symfony/recipes-contrib",
+            "branch": "master",
+            "version": "0.12",
+            "ref": "d6583fd2a290e5497ee8bc28f2adb0399ae0209e"
+        },
+        "files": [
+            "config/graphql/types/.gitignore",
+            "config/packages/graphql.yaml",
+            "config/routes/graphql.yaml"
+        ]
+    },
     "psr/cache": {
         "version": "1.0.1"
     },
@@ -229,6 +243,9 @@
     "symfony/event-dispatcher-contracts": {
         "version": "v1.1.5"
     },
+    "symfony/expression-language": {
+        "version": "v4.3.2"
+    },
     "symfony/filesystem": {
         "version": "v4.3.2"
     },
@@ -303,6 +320,9 @@
             "config/packages/prod/monolog.yaml",
             "config/packages/test/monolog.yaml"
         ]
+    },
+    "symfony/options-resolver": {
+        "version": "v4.3.2"
     },
     "symfony/orm-pack": {
         "version": "v1.0.6"
@@ -400,6 +420,9 @@
     },
     "twig/twig": {
         "version": "v2.11.3"
+    },
+    "webonyx/graphql-php": {
+        "version": "v0.13.5"
     },
     "zendframework/zend-code": {
         "version": "3.3.1"
