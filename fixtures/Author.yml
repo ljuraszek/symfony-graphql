@@ -1,6 +1,7 @@
 App\Entity\Author:
   author_{1..30}:
-    firstName: <firstName()>
-    lastName: <lastName()>
-    registrationDate: <dateTimeBetween('-1 year', 'now')>
-    sex: <randomElement([M,F])>
+    __construct:
+      - '<firstName()>'
+      - '<lastName()>'
+      - '<dateTimeBetween("-1 year", "now")>'
+      - '<randomElement([M,F])>'

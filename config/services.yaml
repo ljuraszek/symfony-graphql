@@ -24,10 +24,11 @@ services:
         tags: ['controller.service_arguments']
 
     # add more service definitions when explicit configuration is needed
-    # please note that last definitions always *replace* previous ones
+    # please note that last definitions always *replace* previous one
 
     _instanceof:
         Overblog\GraphQLBundle\Definition\Resolver\ResolverInterface:
             tags: ['overblog_graphql.resolver']
         Overblog\GraphQLBundle\Definition\Resolver\MutationInterface:
             tags: ['overblog_graphql.mutation']
+

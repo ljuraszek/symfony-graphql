@@ -1,8 +1,9 @@
 App\Entity\Post:
   post_{1..150}:
-    topic: <sentence(6)>
-    content: <text(500)>
-    createdAt: <dateTimeBetween('-1 year', 'now')>
-    numberOfLikes: <numberBetween(1, 50)>
-    author: '@author*'
-    tags: '<numberBetween(5, 10)>x @tag*'
+    __construct:
+      - '<sentence(6)>'
+      - '<text(500)>'
+      - '<dateTimeBetween("-1 year", "now")>'
+      - '<numberBetween(1, 50)>'
+      - '@author*'
+      - '<numberBetween(5, 10)>x @tag*'

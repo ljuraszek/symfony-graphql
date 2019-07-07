@@ -12,6 +12,8 @@ use Doctrine\ORM\Mapping as ORM;
 class Tag
 {
     /**
+     * @var int|null
+     *
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
@@ -19,6 +21,8 @@ class Tag
     private $id;
 
     /**
+     * @var string
+     * 
      * @ORM\Column(type="string", length=255)
      */
     private $name;
@@ -28,32 +32,26 @@ class Tag
      */
     private $posts;
 
-    public function __construct()
+    public function __construct(string $name)
     {
         $this->posts = new ArrayCollection();
+        $this->name  = $name;
     }
 
-    public function getId(): ?int
+    public function id(): ?int
     {
         return $this->id;
     }
 
-    public function getName(): ?string
+    public function name(): string
     {
         return $this->name;
-    }
-
-    public function setName(string $name): self
-    {
-        $this->name = $name;
-
-        return $this;
     }
 
     /**
      * @return Collection|Post[]
      */
-    public function getPosts(): Collection
+    public function posts(): Collection
     {
         return $this->posts;
     }
@@ -63,16 +61,6 @@ class Tag
         if (!$this->posts->contains($post)) {
             $this->posts[] = $post;
             $post->addTag($this);
-        }
-
-        return $this;
-    }
-
-    public function removePost(Post $post): self
-    {
-        if ($this->posts->contains($post)) {
-            $this->posts->removeElement($post);
-            $post->removeTag($this);
         }
 
         return $this;

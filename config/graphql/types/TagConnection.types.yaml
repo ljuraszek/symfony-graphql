@@ -1,0 +1,4 @@
+tagConnection:
+  type: relay-connection
+  config:
+    nodeType: Tag

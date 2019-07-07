@@ -3,60 +3,72 @@
 namespace App\GraphQL\Resolver;
 
 use App\Entity\Author;
-use Doctrine\Common\Collections\Collection;
-use Doctrine\ORM\EntityManagerInterface;
+use App\Repository\AuthorRepository;
+use App\Repository\Query\Post\AllAuthorsPostsQuery;
 use GraphQL\Type\Definition\ResolveInfo;
 use Overblog\GraphQLBundle\Definition\Argument;
 use Overblog\GraphQLBundle\Definition\Resolver\AliasedInterface;
 use Overblog\GraphQLBundle\Definition\Resolver\ResolverInterface;
+use Overblog\GraphQLBundle\Error\UserError;
 use Overblog\GraphQLBundle\Relay\Connection\ConnectionInterface;
-use Overblog\GraphQLBundle\Relay\Connection\Output\Connection;
 use Overblog\GraphQLBundle\Relay\Connection\Paginator;
 
 class AuthorResolver implements ResolverInterface, AliasedInterface
 {
-    /** @var EntityManagerInterface */
-    private $entityManager;
+    /** @var AllAuthorsPostsQuery */
+    private $allAuthorsPostsQuery;
     
-    public function __construct(EntityManagerInterface $entityManager)
+    /** @var AuthorRepository */
+    private $authorRepository;
+    
+    public function __construct(AuthorRepository $authorRepository, AllAuthorsPostsQuery $allAuthorsPostsQuery)
     {
-        $this->entityManager = $entityManager;
+        $this->allAuthorsPostsQuery = $allAuthorsPostsQuery;
+        $this->authorRepository     = $authorRepository;
     }
     
     public function __invoke(ResolveInfo $info, $value, Argument $args)
     {
         $method = $info->fieldName;
+        
         return $this->$method($value, $args);
     }
     
-    public function find(int $id) :Author
+    public function find(int $id): Author
     {
-        return $this->entityManager->find(Author::class, $id);
+        $author = $this->authorRepository->find($id);
+        if ($author === null) {
+            throw new UserError('Author not found');
+        }
+        
+        return $author;
     }
     
     public function all()
     {
-        return $this->entityManager->getRepository(Author::class)->findAll();
+        return $this->authorRepository->findAll();
     }
     
-    public function firstName(Author $author) :string
+    public function firstName(Author $author): string
     {
-        return $author->getFirstName();
+        return $author->firstName();
     }
     
     public function lastName(Author $author): string
     {
-        return $author->getLastName();
+        return $author->lastName();
     }
     
     public function posts(Author $author, Argument $args): ConnectionInterface
     {
-        $posts = $author->getPosts()->toArray();
-    
-        $paginator = new Paginator(static function ($offset, $limit) use ($posts) {
-            return array_slice($posts, $offset, $limit ?? 10);
-        });
-        return $paginator->auto($args, count($posts));
+        $query     = $this->allAuthorsPostsQuery;
+        $paginator = new Paginator(
+            static function ($offset, $limit) use ($author, $query) {
+                return $query->execute($author, $limit, $offset);
+            }
+        );
+        
+        return $paginator->auto($args, count($query->execute($author, null, null)));
     }
     
     public static function getAliases(): array

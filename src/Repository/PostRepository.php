@@ -1,50 +1,39 @@
-<?php
+<?php declare(strict_types = 1);
 
 namespace App\Repository;
 
 use App\Entity\Post;
+use App\Repository\Query\Post\Model\PostModel;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\QueryBuilder;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
-/**
- * @method Post|null find($id, $lockMode = null, $lockVersion = null)
- * @method Post|null findOneBy(array $criteria, array $orderBy = null)
- * @method Post[]    findAll()
- * @method Post[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
- */
 class PostRepository extends ServiceEntityRepository
 {
     public function __construct(RegistryInterface $registry)
     {
         parent::__construct($registry, Post::class);
     }
-
-    // /**
-    //  * @return Post[] Returns an array of Post objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    
+    public function find($id, $lockMode = null, $lockVersion = null): ?PostModel
     {
-        return $this->createQueryBuilder('p')
-            ->andWhere('p.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('p.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-    */
-
-    /*
-    public function findOneBySomeField($value): ?Post
-    {
-        return $this->createQueryBuilder('p')
-            ->andWhere('p.exampleField = :val')
-            ->setParameter('val', $value)
+        return $this->createView('post')
+            ->andWhere('post.id = :id')
+            ->setParameter('id', $id)
+            ->setMaxResults(1)
             ->getQuery()
             ->getOneOrNullResult()
         ;
     }
-    */
+    
+    public function createView(string $alias): QueryBuilder
+    {
+        $model = sprintf(
+            'NEW %1$s(%2$s.id, %2$s.topic, %2$s.content, %2$s.createdAt, %2$s.numberOfLikes)',
+            PostModel::class,
+            $alias
+        );
+        
+        return $this->createQueryBuilder($alias)->select($model);
+    }
 }

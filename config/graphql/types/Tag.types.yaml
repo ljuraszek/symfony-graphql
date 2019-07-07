@@ -1,0 +1,9 @@
+Tag:
+  type: object
+  config:
+    resolveField: '@=resolver("App\\GraphQL\\Resolver\\TagResolver", [info, value, args])'
+    fields:
+      id:
+        type: Int!
+      name:
+        type: String!

@@ -12,6 +12,7 @@ use Doctrine\ORM\Mapping as ORM;
 class Post
 {
     /**
+     * @var int|null
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
@@ -19,127 +20,75 @@ class Post
     private $id;
 
     /**
+     * @var string
      * @ORM\Column(type="string", length=255)
      */
     private $topic;
 
     /**
+     * @var string
      * @ORM\Column(type="text")
      */
     private $content;
 
     /**
+     * @var \DateTime
      * @ORM\Column(type="datetime")
      */
     private $createdAt;
 
     /**
+     * @var int
      * @ORM\Column(type="integer")
      */
-    private $numberOfLikes = 0;
+    private $numberOfLikes;
 
     /**
+     * @var Author
      * @ORM\ManyToOne(targetEntity="App\Entity\Author", inversedBy="posts")
      * @ORM\JoinColumn(nullable=false)
      */
     private $author;
 
     /**
+     * @var ArrayCollection|Tag[]
      * @ORM\ManyToMany(targetEntity="App\Entity\Tag", inversedBy="posts")
      */
     private $tags;
-
-    public function __construct()
-    {
-        $this->tags = new ArrayCollection();
+    
+    public function __construct(
+        string $topic,
+        string $content,
+        \DateTime $createdAt,
+        int $numberOfLikes,
+        Author $author,
+        array $tags
+    ) {
+        $this->tags          = new ArrayCollection();
+        $this->topic         = $topic;
+        $this->content       = $content;
+        $this->createdAt     = $createdAt;
+        $this->numberOfLikes = $numberOfLikes;
+        $this->author        = $author;
+        $this->addTags($tags);
     }
 
-    public function getId(): ?int
+    public function id(): ?int
     {
         return $this->id;
     }
-
-    public function getTopic(): ?string
+    
+    public function addTags(array $tags): void
     {
-        return $this->topic;
-    }
-
-    public function setTopic(string $topic): self
-    {
-        $this->topic = $topic;
-
-        return $this;
-    }
-
-    public function getContent(): ?string
-    {
-        return $this->content;
-    }
-
-    public function setContent(string $content): self
-    {
-        $this->content = $content;
-
-        return $this;
-    }
-
-    public function getCreatedAt(): ?\DateTimeInterface
-    {
-        return $this->createdAt;
-    }
-
-    public function setCreatedAt(\DateTimeInterface $createdAt): self
-    {
-        $this->createdAt = $createdAt;
-
-        return $this;
-    }
-
-    public function getNumberOfLikes(): ?int
-    {
-        return $this->numberOfLikes;
-    }
-
-    public function setNumberOfLikes(int $numberOfLikes): self
-    {
-        $this->numberOfLikes = $numberOfLikes;
-
-        return $this;
-    }
-
-    public function getAuthor(): ?Author
-    {
-        return $this->author;
-    }
-
-    public function setAuthor(?Author $author): self
-    {
-        $this->author = $author;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|Tag[]
-     */
-    public function getTags(): Collection
-    {
-        return $this->tags;
+        foreach ($tags as $tag) {
+            $this->addTag($tag);
+        }
     }
 
     public function addTag(Tag $tag): self
     {
         if (!$this->tags->contains($tag)) {
             $this->tags[] = $tag;
-        }
-
-        return $this;
-    }
-
-    public function removeTag(Tag $tag): self
-    {
-        if ($this->tags->contains($tag)) {
-            $this->tags->removeElement($tag);
         }
 
         return $this;

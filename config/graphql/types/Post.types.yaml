@@ -3,7 +3,16 @@ Post:
   config:
     resolveField: '@=resolver("App\\GraphQL\\Resolver\\PostResolver", [info, value, args])'
     fields:
+      id:
+        type: Int!
       topic:
-        type: String
+        type: String!
       content:
-        type: String
+        type: String!
+      createdAt:
+        type: DateTime!
+      numberOfLikes:
+        type: Int!
+      tags:
+        type: tagConnection
+        argsBuilder: Relay::ForwardConnection

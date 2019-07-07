@@ -1,50 +1,45 @@
-<?php
+<?php declare(strict_types = 1);
 
 namespace App\Repository;
 
 use App\Entity\Tag;
+use App\Repository\Query\Tag\Model\TagModel;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\QueryBuilder;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
-/**
- * @method Tag|null find($id, $lockMode = null, $lockVersion = null)
- * @method Tag|null findOneBy(array $criteria, array $orderBy = null)
- * @method Tag[]    findAll()
- * @method Tag[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
- */
 class TagRepository extends ServiceEntityRepository
 {
     public function __construct(RegistryInterface $registry)
     {
         parent::__construct($registry, Tag::class);
     }
-
-    // /**
-    //  * @return Tag[] Returns an array of Tag objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    
+    public function find($id, $lockMode = null, $lockVersion = null): ?TagModel
     {
-        return $this->createQueryBuilder('t')
-            ->andWhere('t.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('t.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-    */
-
-    /*
-    public function findOneBySomeField($value): ?Tag
-    {
-        return $this->createQueryBuilder('t')
-            ->andWhere('t.exampleField = :val')
-            ->setParameter('val', $value)
+        return $this->createView('tag')
+            ->andWhere('post.id = :id')
+            ->setMaxResults(1)
+            ->setParameter('id', $id)
             ->getQuery()
             ->getOneOrNullResult()
         ;
     }
-    */
+    
+    public function createView(string $alias): QueryBuilder
+    {
+        $model = sprintf(
+            'NEW %1$s(%2$s.id, %2$s.name)',
+            TagModel::class,
+            $alias
+        );
+        
+        return $this->createQueryBuilder($alias)->select($model);
+    }
+    
+    public function entityManager(): EntityManagerInterface
+    {
+        return $this->getEntityManager();
+    }
 }

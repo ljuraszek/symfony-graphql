@@ -2,40 +2,49 @@
 
 namespace App\GraphQL\Resolver;
 
-use App\Entity\Post;
 use App\Repository\PostRepository;
+use App\Repository\Query\Post\Model\PostModel;
+use App\Repository\Query\Tag\AllPostTagsQuery;
 use GraphQL\Type\Definition\ResolveInfo;
 use Overblog\GraphQLBundle\Definition\Argument;
 use Overblog\GraphQLBundle\Definition\Resolver\ResolverInterface;
+use Overblog\GraphQLBundle\Relay\Connection\Paginator;
 
 class PostResolver implements ResolverInterface
 {
     /** @var PostRepository */
     private $postRepository;
     
-    public function __construct(PostRepository $postRepository)
+    /** @var AllPostTagsQuery */
+    private $allPostTagsQuery;
+    
+    public function __construct(PostRepository $postRepository, AllPostTagsQuery $allPostTagsQuery)
     {
         $this->postRepository = $postRepository;
+        $this->allPostTagsQuery = $allPostTagsQuery;
     }
     
-    public function __invoke(ResolveInfo $info, $value, Argument $args)
+    public function __invoke(ResolveInfo $info, PostModel $value, Argument $args)
     {
         $method = $info->fieldName;
-        return $this->$method($value, $args);
+        
+        return method_exists($this, $method) ? $this->$method($value, $args) : $value->$method();
     }
     
-    public function find(int $id) :Post
+    public function find(int $id): PostModel
     {
         return $this->postRepository->find($id);
     }
     
-    public function topic(Post $post) :string
+    public function tags(PostModel $post, Argument $args)
     {
-        return $post->getTopic();
-    }
+        $query     = $this->allPostTagsQuery;
+        $paginator = new Paginator(
+            static function ($offset, $limit) use ($post, $query) {
+                return $query->execute($post, $limit, $offset);
+            }
+        );
     
-    public function content(Post $post): string
-    {
-        return $post->getContent();
+        return $paginator->auto($args, count($query->execute($post, null, null)));
     }
 }

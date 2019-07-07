@@ -4,9 +4,9 @@ Author:
     resolveField: '@=resolver("App\\GraphQL\\Resolver\\AuthorResolver", [info, value, args])'
     fields:
       firstName:
-        type: String
+        type: String!
       lastName:
-        type: String
+        type: String!
       posts:
         type: postConnection
         argsBuilder: Relay::ForwardConnection
