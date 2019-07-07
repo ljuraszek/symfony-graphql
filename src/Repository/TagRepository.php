@@ -9,14 +9,14 @@ use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\QueryBuilder;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
-class TagRepository extends ServiceEntityRepository
+final class TagRepository extends ServiceEntityRepository
 {
     public function __construct(RegistryInterface $registry)
     {
         parent::__construct($registry, Tag::class);
     }
     
-    public function find($id, $lockMode = null, $lockVersion = null): ?TagModel
+    public function findOneById(int $id): ?TagModel
     {
         return $this->createView('tag')
             ->andWhere('post.id = :id')

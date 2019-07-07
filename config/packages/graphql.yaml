@@ -2,7 +2,6 @@ overblog_graphql:
   definitions:
     schema:
       query: Query
-      types: ["DateTime"]
     mappings:
       types:
         - type: yaml

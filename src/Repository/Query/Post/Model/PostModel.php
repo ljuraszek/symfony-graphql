@@ -53,26 +53,17 @@ final class PostModel
         $this->createdAt     = $createdAt;
         $this->numberOfLikes = $numberOfLikes;
     }
-    
-    /**
-     * @return int
-     */
+
     public function id(): int
     {
         return $this->id;
     }
-    
-    /**
-     * @return string
-     */
+
     public function topic(): string
     {
         return $this->topic;
     }
-    
-    /**
-     * @return string
-     */
+
     public function content(): string
     {
         return $this->content;

@@ -6,7 +6,7 @@ use App\Entity\Author;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
-class AuthorRepository extends ServiceEntityRepository
+final class AuthorRepository extends ServiceEntityRepository
 {
     public function __construct(RegistryInterface $registry)
     {

@@ -8,9 +8,10 @@ use App\Repository\Query\Tag\AllPostTagsQuery;
 use GraphQL\Type\Definition\ResolveInfo;
 use Overblog\GraphQLBundle\Definition\Argument;
 use Overblog\GraphQLBundle\Definition\Resolver\ResolverInterface;
+use Overblog\GraphQLBundle\Relay\Connection\ConnectionInterface;
 use Overblog\GraphQLBundle\Relay\Connection\Paginator;
 
-class PostResolver implements ResolverInterface
+final class PostResolver implements ResolverInterface
 {
     /** @var PostRepository */
     private $postRepository;
@@ -24,6 +25,13 @@ class PostResolver implements ResolverInterface
         $this->allPostTagsQuery = $allPostTagsQuery;
     }
     
+    /**
+     * @param ResolveInfo $info
+     * @param PostModel   $value
+     * @param Argument    $args
+     *
+     * @return int|string|bool
+     */
     public function __invoke(ResolveInfo $info, PostModel $value, Argument $args)
     {
         $method = $info->fieldName;
@@ -33,10 +41,10 @@ class PostResolver implements ResolverInterface
     
     public function find(int $id): PostModel
     {
-        return $this->postRepository->find($id);
+        return $this->postRepository->findOneById($id);
     }
     
-    public function tags(PostModel $post, Argument $args)
+    public function tags(PostModel $post, Argument $args): ConnectionInterface
     {
         $query     = $this->allPostTagsQuery;
         $paginator = new Paginator(

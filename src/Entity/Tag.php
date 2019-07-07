@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types = 1);
 
 namespace App\Entity;
 
@@ -22,12 +22,14 @@ class Tag
 
     /**
      * @var string
-     * 
+     *
      * @ORM\Column(type="string", length=255)
      */
     private $name;
 
     /**
+     * @var ArrayCollection|<Post>
+     *
      * @ORM\ManyToMany(targetEntity="App\Entity\Post", mappedBy="tags")
      */
     private $posts;
@@ -49,7 +51,7 @@ class Tag
     }
 
     /**
-     * @return Collection|Post[]
+     * @return Collection|array<Post>
      */
     public function posts(): Collection
     {

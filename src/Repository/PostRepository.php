@@ -8,14 +8,14 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\QueryBuilder;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
-class PostRepository extends ServiceEntityRepository
+final class PostRepository extends ServiceEntityRepository
 {
     public function __construct(RegistryInterface $registry)
     {
         parent::__construct($registry, Post::class);
     }
     
-    public function find($id, $lockMode = null, $lockVersion = null): ?PostModel
+    public function findOneById(int $id): ?PostModel
     {
         return $this->createView('post')
             ->andWhere('post.id = :id')

@@ -26,17 +26,11 @@ final class TagModel
         $this->name = $name;
     }
     
-    /**
-     * @return int
-     */
     public function id(): int
     {
         return $this->id;
     }
-    
-    /**
-     * @return string
-     */
+
     public function name(): string
     {
         return $this->name;

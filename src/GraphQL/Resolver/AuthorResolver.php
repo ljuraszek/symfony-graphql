@@ -13,7 +13,7 @@ use Overblog\GraphQLBundle\Error\UserError;
 use Overblog\GraphQLBundle\Relay\Connection\ConnectionInterface;
 use Overblog\GraphQLBundle\Relay\Connection\Paginator;
 
-class AuthorResolver implements ResolverInterface, AliasedInterface
+final class AuthorResolver implements ResolverInterface, AliasedInterface
 {
     /** @var AllAuthorsPostsQuery */
     private $allAuthorsPostsQuery;
@@ -27,11 +27,18 @@ class AuthorResolver implements ResolverInterface, AliasedInterface
         $this->authorRepository     = $authorRepository;
     }
     
-    public function __invoke(ResolveInfo $info, $value, Argument $args)
+    /**
+     * @param ResolveInfo $info
+     * @param Author      $author
+     * @param Argument    $args
+     *
+     * @return int|string|bool
+     */
+    public function __invoke(ResolveInfo $info, Author $author, Argument $args)
     {
         $method = $info->fieldName;
         
-        return $this->$method($value, $args);
+        return $this->$method($author, $args);
     }
     
     public function find(int $id): Author
@@ -44,7 +51,10 @@ class AuthorResolver implements ResolverInterface, AliasedInterface
         return $author;
     }
     
-    public function all()
+    /**
+     * @return array<Author>
+     */
+    public function all(): array
     {
         return $this->authorRepository->findAll();
     }
@@ -71,6 +81,9 @@ class AuthorResolver implements ResolverInterface, AliasedInterface
         return $paginator->auto($args, count($query->execute($author, null, null)));
     }
     
+    /**
+     * @return array<string>
+     */
     public static function getAliases(): array
     {
         return [

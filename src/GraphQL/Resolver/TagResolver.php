@@ -8,7 +8,7 @@ use GraphQL\Type\Definition\ResolveInfo;
 use Overblog\GraphQLBundle\Definition\Argument;
 use Overblog\GraphQLBundle\Definition\Resolver\ResolverInterface;
 
-class TagResolver implements ResolverInterface
+final class TagResolver implements ResolverInterface
 {
     /** @var TagRepository */
     private $tagRepository;
@@ -18,6 +18,13 @@ class TagResolver implements ResolverInterface
         $this->tagRepository = $tagRepository;
     }
     
+    /**
+     * @param ResolveInfo $info
+     * @param TagModel    $value
+     * @param Argument    $args
+     *
+     * @return int|string|bool
+     */
     public function __invoke(ResolveInfo $info, TagModel $value, Argument $args)
     {
         $method = $info->fieldName;
@@ -27,6 +34,6 @@ class TagResolver implements ResolverInterface
     
     public function find(int $id): TagModel
     {
-        return $this->tagRepository->find($id);
+        return $this->tagRepository->findOneById($id);
     }
 }

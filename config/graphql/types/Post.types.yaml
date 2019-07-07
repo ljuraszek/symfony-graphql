@@ -10,7 +10,11 @@ Post:
       content:
         type: String!
       createdAt:
-        type: DateTime!
+        type: String!
+        args:
+          format:
+            type: String
+        resolve: '@=resolver("App\\GraphQL\\Resolver\\DateTimeResolver", [value.createdAt(), args["format"]])'
       numberOfLikes:
         type: Int!
       tags:

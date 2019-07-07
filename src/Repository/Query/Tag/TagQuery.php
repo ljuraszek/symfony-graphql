@@ -4,7 +4,7 @@ namespace App\Repository\Query\Tag;
 
 use App\Repository\TagRepository;
 
-class TagQuery
+abstract class TagQuery
 {
     /** @var TagRepository */
     protected $repository;

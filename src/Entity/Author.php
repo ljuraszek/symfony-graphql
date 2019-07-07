@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types = 1);
 
 namespace App\Entity;
 
@@ -13,6 +13,7 @@ class Author
 {
     /**
      * @var int|null
+     *
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
@@ -21,30 +22,35 @@ class Author
 
     /**
      * @var string
+     *
      * @ORM\Column(type="string", length=255)
      */
     private $firstName;
 
     /**
      * @var string
+     *
      * @ORM\Column(type="string", length=255)
      */
     private $lastName;
 
     /**
      * @var \DateTime
+     *
      * @ORM\Column(type="datetime")
      */
     private $registrationDate;
 
     /**
      * @var string
+     *
      * @ORM\Column(type="string", length=1)
      */
     private $sex;
 
     /**
-     * @var ArrayCollection|Post[]
+     * @var ArrayCollection|array<Post>
+     *
      * @ORM\OneToMany(targetEntity="App\Entity\Post", mappedBy="author", orphanRemoval=true)
      */
     private $posts;
@@ -84,7 +90,7 @@ class Author
     }
 
     /**
-     * @return Collection|Post[]
+     * @return Collection|array<Post>
      */
     public function posts(): Collection
     {

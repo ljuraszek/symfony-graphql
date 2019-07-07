@@ -1,9 +1,8 @@
-<?php
+<?php declare(strict_types = 1);
 
 namespace App\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -13,49 +12,66 @@ class Post
 {
     /**
      * @var int|null
+     *
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
      */
-    private $id;
+    protected $id;
 
     /**
      * @var string
+     *
      * @ORM\Column(type="string", length=255)
      */
-    private $topic;
+    protected $topic;
 
     /**
      * @var string
+     *
      * @ORM\Column(type="text")
      */
-    private $content;
+    protected $content;
 
     /**
      * @var \DateTime
+     *
      * @ORM\Column(type="datetime")
      */
-    private $createdAt;
+    protected $createdAt;
 
     /**
      * @var int
+     *
      * @ORM\Column(type="integer")
      */
-    private $numberOfLikes;
+    protected $numberOfLikes;
 
     /**
      * @var Author
+     *
      * @ORM\ManyToOne(targetEntity="App\Entity\Author", inversedBy="posts")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $author;
+    protected $author;
 
     /**
-     * @var ArrayCollection|Tag[]
+     * @var ArrayCollection|array<Tag>
+     *
      * @ORM\ManyToMany(targetEntity="App\Entity\Tag", inversedBy="posts")
      */
-    private $tags;
+    protected $tags;
     
+    /**
+     * Post constructor.
+     *
+     * @param string     $topic
+     * @param string     $content
+     * @param \DateTime  $createdAt
+     * @param int        $numberOfLikes
+     * @param Author     $author
+     * @param array<Tag> $tags
+     */
     public function __construct(
         string $topic,
         string $content,
@@ -78,6 +94,9 @@ class Post
         return $this->id;
     }
     
+    /**
+     * @param array<Tag> $tags
+     */
     public function addTags(array $tags): void
     {
         foreach ($tags as $tag) {
