@@ -112,4 +112,10 @@ class Post
 
         return $this;
     }
+    
+    public function update(string $topic, string $content): void
+    {
+        $this->topic   = $topic;
+        $this->content = $content;
+    }
 }

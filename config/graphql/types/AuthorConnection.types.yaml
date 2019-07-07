@@ -1,0 +1,4 @@
+authorConnection:
+  type: relay-connection
+  config:
+    nodeType: Author

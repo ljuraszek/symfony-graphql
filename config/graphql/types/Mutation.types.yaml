@@ -1,0 +1,21 @@
+Mutation:
+  type: object
+  config:
+    fields:
+      UpdatePost:
+        type: Post!
+        args:
+          input:
+            type: UpdatePostInput!
+        resolve: "@=mutation('update_post', [args['input']['id'], args['input']['topic'], args['input']['content']])"
+
+UpdatePostInput:
+  type: input-object
+  config:
+    fields:
+      id:
+        type: Int!
+      topic:
+        type: String!
+      content:
+        type: String!

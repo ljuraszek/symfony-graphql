@@ -3,10 +3,18 @@ Author:
   config:
     resolveField: '@=resolver("App\\GraphQL\\Resolver\\AuthorResolver", [info, value, args])'
     fields:
+      id:
+        type: Int!
       firstName:
         type: String!
       lastName:
         type: String!
+      registrationDate:
+        type: String!
+        args:
+          format:
+            type: String
+        resolve: '@=resolver("App\\GraphQL\\Resolver\\DateTimeResolver", [value.registrationDate(), args["format"]])'
       posts:
         type: postConnection
         argsBuilder: Relay::ForwardConnection

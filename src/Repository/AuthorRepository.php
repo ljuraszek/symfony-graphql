@@ -30,9 +30,11 @@ final class AuthorRepository extends ServiceEntityRepository
     /**
      * @return array<AuthorModel>
      */
-    public function all(): array
+    public function all(?int $limit, ?int $offset): array
     {
         return $this->createView('author')
+            ->setMaxResults($limit ?? 10)
+            ->setFirstResult($offset ?? 1)
             ->getQuery()
             ->getResult()
         ;

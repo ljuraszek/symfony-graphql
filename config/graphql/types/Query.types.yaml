@@ -9,5 +9,6 @@ Query:
             type: Int
         resolve: '@=resolver("App\\GraphQL\\Resolver\\AuthorResolver::find", [args["id"]])'
       authors:
-        type: "[Author]"
-        resolve: '@=resolver("App\\GraphQL\\Resolver\\AuthorResolver::all")'
+        type: authorConnection
+        resolve: '@=resolver("App\\GraphQL\\Resolver\\AuthorResolver::all", [args])'
+        argsBuilder: Relay::ForwardConnection

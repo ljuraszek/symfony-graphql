@@ -2,7 +2,6 @@
 
 namespace App\GraphQL\Resolver;
 
-use App\Entity\Author;
 use App\Repository\AuthorRepository;
 use App\Repository\Query\Author\Model\AuthorModel;
 use App\Repository\Query\Post\AllAuthorsPostsQuery;
@@ -52,12 +51,17 @@ final class AuthorResolver implements ResolverInterface, AliasedInterface
         return $author;
     }
     
-    /**
-     * @return array<Author>
-     */
-    public function all(): array
+    public function all(Argument $args): ConnectionInterface
     {
-        return $this->authorRepository->all();
+        $repo = $this->authorRepository;
+        
+        $paginator = new Paginator(
+            static function ($offset, $limit) use ($repo) {
+                return $repo->all($limit, $offset);
+            }
+        );
+    
+        return $paginator->forward($args);
     }
     
     public function posts(AuthorModel $author, Argument $args): ConnectionInterface
