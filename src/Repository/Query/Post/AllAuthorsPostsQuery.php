@@ -3,24 +3,30 @@
 namespace App\Repository\Query\Post;
 
 use App\Entity\Author;
+use App\Repository\Query\Author\Model\AuthorModel;
 use App\Repository\Query\Post\Model\PostModel;
+use Doctrine\ORM\ORMException;
 
 final class AllAuthorsPostsQuery extends PostQuery
 {
     /**
-     * @param Author   $author
-     * @param int|null $limit
-     * @param int|null $offset
+     * @param AuthorModel $author
+     * @param int|null    $limit
+     * @param int|null    $offset
      *
      * @return array<PostModel>
+     *
+     * @throws ORMException
      */
-    public function execute(Author $author, ?int $limit, ?int $offset): array
+    public function execute(AuthorModel $author, ?int $limit, ?int $offset): array
     {
+        $reference = $this->repository->entityManager()->getReference(Author::class, $author->id());
+        
         return $this->repository->createView('post')
             ->andWhere('post.author = :author')
             ->setMaxResults($limit ?? 10)
             ->setFirstResult($offset ?? 1)
-            ->setParameter('author', $author)
+            ->setParameter('author', $reference)
             ->getQuery()
             ->getResult()
         ;

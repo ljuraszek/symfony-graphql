@@ -5,6 +5,7 @@ namespace App\Repository;
 use App\Entity\Post;
 use App\Repository\Query\Post\Model\PostModel;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\QueryBuilder;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
@@ -35,5 +36,10 @@ final class PostRepository extends ServiceEntityRepository
         );
         
         return $this->createQueryBuilder($alias)->select($model);
+    }
+    
+    public function entityManager(): EntityManagerInterface
+    {
+        return $this->getEntityManager();
     }
 }
