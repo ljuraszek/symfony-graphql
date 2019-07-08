@@ -1,4 +1,5 @@
 overblog_graphql:
+  security: '%kernel.debug%'
   definitions:
     schema:
       query: Query
