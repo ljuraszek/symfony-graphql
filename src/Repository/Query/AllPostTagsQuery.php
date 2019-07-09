@@ -20,14 +20,12 @@ final class AllPostTagsQuery extends TagQuery
      */
     public function execute(PostModel $post, ?int $limit, ?int $offset): array
     {
-        $reference = $this->repository->entityManager()->getReference(Post::class, $post->id());
-        
         return $this->repository->createView('tag')
             ->innerJoin('tag.posts', 'posts')
             ->andWhere('posts = :post')
             ->setMaxResults($limit ?? 10)
             ->setFirstResult($offset ?? 1)
-            ->setParameter('post', $reference)
+            ->setParameter('post', $this->repository->getReference(Post::class, $post->id()))
             ->getQuery()
             ->getResult()
         ;

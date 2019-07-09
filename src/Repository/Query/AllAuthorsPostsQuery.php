@@ -20,13 +20,11 @@ final class AllAuthorsPostsQuery extends PostQuery
      */
     public function execute(AuthorModel $author, ?int $limit, ?int $offset): array
     {
-        $reference = $this->repository->entityManager()->getReference(Author::class, $author->id());
-        
         return $this->repository->createView('post')
             ->andWhere('post.author = :author')
             ->setMaxResults($limit ?? 10)
             ->setFirstResult($offset ?? 1)
-            ->setParameter('author', $reference)
+            ->setParameter('author', $this->repository->getReference(Author::class, $author->id()))
             ->getQuery()
             ->getResult()
         ;
