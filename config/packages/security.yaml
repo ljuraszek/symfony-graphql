@@ -1,0 +1,10 @@
+security:
+    encoders:
+        App\Entity\User:
+            algorithm: argon2i
+    firewalls:
+        dev:
+            pattern: ^/(_(profiler|wdt)|css|images|js)/
+            security: false
+        main:
+            anonymous: true

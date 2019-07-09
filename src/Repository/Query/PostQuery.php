@@ -1,6 +1,6 @@
 <?php declare(strict_types = 1);
 
-namespace App\Repository\Query\Post;
+namespace App\Repository\Query;
 
 use App\Repository\PostRepository;
 

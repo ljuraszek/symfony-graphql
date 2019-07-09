@@ -1,6 +1,6 @@
 <?php declare(strict_types = 1);
 
-namespace App\Repository\Query\Author\Model;
+namespace App\Repository\Query\Model;
 
 use DateTime;
 

@@ -1,10 +1,10 @@
 <?php declare(strict_types = 1);
 
-namespace App\Repository\Query\Post;
+namespace App\Repository\Query;
 
 use App\Entity\Author;
-use App\Repository\Query\Author\Model\AuthorModel;
-use App\Repository\Query\Post\Model\PostModel;
+use App\Repository\Query\Model\AuthorModel;
+use App\Repository\Query\Model\PostModel;
 use Doctrine\ORM\ORMException;
 
 final class AllAuthorsPostsQuery extends PostQuery

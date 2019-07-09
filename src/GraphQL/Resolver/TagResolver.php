@@ -2,7 +2,7 @@
 
 namespace App\GraphQL\Resolver;
 
-use App\Repository\Query\Tag\Model\TagModel;
+use App\Repository\Query\Model\TagModel;
 use App\Repository\TagRepository;
 use GraphQL\Type\Definition\ResolveInfo;
 use Overblog\GraphQLBundle\Definition\Argument;

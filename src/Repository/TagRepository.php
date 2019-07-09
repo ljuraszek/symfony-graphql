@@ -3,18 +3,13 @@
 namespace App\Repository;
 
 use App\Entity\Tag;
-use App\Repository\Query\Tag\Model\TagModel;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\ORM\EntityManagerInterface;
+use App\Repository\Query\Model\TagModel;
 use Doctrine\ORM\QueryBuilder;
-use Symfony\Bridge\Doctrine\RegistryInterface;
 
-final class TagRepository extends ServiceEntityRepository
+final class TagRepository extends CommonRepository
 {
-    public function __construct(RegistryInterface $registry)
-    {
-        parent::__construct($registry, Tag::class);
-    }
+    protected $class = Tag::class;
+    protected $modelClass = TagModel::class;
     
     public function findOneById(int $id): ?TagModel
     {
@@ -31,15 +26,10 @@ final class TagRepository extends ServiceEntityRepository
     {
         $model = sprintf(
             'NEW %1$s(%2$s.id, %2$s.name)',
-            TagModel::class,
+            $this->modelClass,
             $alias
         );
         
         return $this->createQueryBuilder($alias)->select($model);
-    }
-    
-    public function entityManager(): EntityManagerInterface
-    {
-        return $this->getEntityManager();
     }
 }

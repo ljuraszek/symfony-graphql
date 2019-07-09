@@ -3,18 +3,13 @@
 namespace App\Repository;
 
 use App\Entity\Author;
-use App\Repository\Query\Author\Model\AuthorModel;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\ORM\EntityManagerInterface;
+use App\Repository\Query\Model\AuthorModel;
 use Doctrine\ORM\QueryBuilder;
-use Symfony\Bridge\Doctrine\RegistryInterface;
 
-final class AuthorRepository extends ServiceEntityRepository
+final class AuthorRepository extends CommonRepository
 {
-    public function __construct(RegistryInterface $registry)
-    {
-        parent::__construct($registry, Author::class);
-    }
+    protected $class = Author::class;
+    protected $modelClass = AuthorModel::class;
     
     public function findOneById(int $id): ?AuthorModel
     {
@@ -28,6 +23,9 @@ final class AuthorRepository extends ServiceEntityRepository
     }
     
     /**
+     * @param int|null $limit
+     * @param int|null $offset
+     *
      * @return array<AuthorModel>
      */
     public function all(?int $limit, ?int $offset): array
@@ -44,15 +42,10 @@ final class AuthorRepository extends ServiceEntityRepository
     {
         $model = sprintf(
             'NEW %1$s(%2$s.id, %2$s.firstName, %2$s.lastName, %2$s.registrationDate, %2$s.sex)',
-            AuthorModel::class,
+            $this->modelClass,
             $alias
         );
         
         return $this->createQueryBuilder($alias)->select($model);
-    }
-    
-    public function entityManager(): EntityManagerInterface
-    {
-        return $this->getEntityManager();
     }
 }

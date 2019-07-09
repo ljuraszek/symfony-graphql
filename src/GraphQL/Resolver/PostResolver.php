@@ -3,8 +3,8 @@
 namespace App\GraphQL\Resolver;
 
 use App\Repository\PostRepository;
-use App\Repository\Query\Post\Model\PostModel;
-use App\Repository\Query\Tag\AllPostTagsQuery;
+use App\Repository\Query\Model\PostModel;
+use App\Repository\Query\AllPostTagsQuery;
 use GraphQL\Type\Definition\ResolveInfo;
 use Overblog\GraphQLBundle\Definition\Argument;
 use Overblog\GraphQLBundle\Definition\Resolver\ResolverInterface;

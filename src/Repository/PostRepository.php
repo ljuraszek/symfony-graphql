@@ -3,18 +3,13 @@
 namespace App\Repository;
 
 use App\Entity\Post;
-use App\Repository\Query\Post\Model\PostModel;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\ORM\EntityManagerInterface;
+use App\Repository\Query\Model\PostModel;
 use Doctrine\ORM\QueryBuilder;
-use Symfony\Bridge\Doctrine\RegistryInterface;
 
-final class PostRepository extends ServiceEntityRepository
+final class PostRepository extends CommonRepository
 {
-    public function __construct(RegistryInterface $registry)
-    {
-        parent::__construct($registry, Post::class);
-    }
+    protected $class = Post::class;
+    protected $modelClass = PostModel::class;
     
     public function findOneById(int $id): ?PostModel
     {
@@ -31,15 +26,10 @@ final class PostRepository extends ServiceEntityRepository
     {
         $model = sprintf(
             'NEW %1$s(%2$s.id, %2$s.topic, %2$s.content, %2$s.createdAt, %2$s.numberOfLikes)',
-            PostModel::class,
+            $this->modelClass,
             $alias
         );
         
         return $this->createQueryBuilder($alias)->select($model);
-    }
-    
-    public function entityManager(): EntityManagerInterface
-    {
-        return $this->getEntityManager();
     }
 }

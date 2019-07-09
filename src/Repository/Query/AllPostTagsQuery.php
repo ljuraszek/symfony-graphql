@@ -1,10 +1,10 @@
 <?php declare(strict_types = 1);
 
-namespace App\Repository\Query\Tag;
+namespace App\Repository\Query;
 
 use App\Entity\Post;
-use App\Repository\Query\Post\Model\PostModel;
-use App\Repository\Query\Tag\Model\TagModel;
+use App\Repository\Query\Model\PostModel;
+use App\Repository\Query\Model\TagModel;
 use Doctrine\ORM\ORMException;
 
 final class AllPostTagsQuery extends TagQuery

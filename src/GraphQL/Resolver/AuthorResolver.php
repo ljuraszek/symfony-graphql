@@ -3,8 +3,8 @@
 namespace App\GraphQL\Resolver;
 
 use App\Repository\AuthorRepository;
-use App\Repository\Query\Author\Model\AuthorModel;
-use App\Repository\Query\Post\AllAuthorsPostsQuery;
+use App\Repository\Query\Model\AuthorModel;
+use App\Repository\Query\AllAuthorsPostsQuery;
 use GraphQL\Type\Definition\ResolveInfo;
 use Overblog\GraphQLBundle\Definition\Argument;
 use Overblog\GraphQLBundle\Definition\Resolver\AliasedInterface;
