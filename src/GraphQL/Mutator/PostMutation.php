@@ -4,7 +4,7 @@ namespace App\GraphQL\Mutator;
 
 use App\Entity\Post;
 use App\Repository\PostRepository;
-use App\Repository\Query\Post\Model\PostModel;
+use App\Repository\Query\Model\PostModel;
 use Overblog\GraphQLBundle\Definition\Resolver\AliasedInterface;
 use Overblog\GraphQLBundle\Definition\Resolver\MutationInterface;
 

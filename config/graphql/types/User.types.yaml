@@ -1,0 +1,16 @@
+User:
+  type: object
+  config:
+    resolveField: '@=resolver("App\\GraphQL\\Resolver\\UserResolver", [info, value, args])'
+    fields:
+      id:
+        type: Int!
+      email:
+        type: String!
+      registrationDate:
+        type: String!
+        args:
+          format:
+            type: String
+        resolve: '@=resolver("App\\GraphQL\\Resolver\\DateTimeResolver", [value.registrationDate(), args["format"]])'
+        

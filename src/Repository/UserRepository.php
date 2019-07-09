@@ -1,21 +1,44 @@
-<?php
+<?php declare(strict_types = 1);
 
 namespace App\Repository;
 
 use App\Entity\User;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Symfony\Bridge\Doctrine\RegistryInterface;
+use App\Repository\Query\Model\UserModel;
+use Doctrine\ORM\QueryBuilder;
 
-/**
- * @method User|null find($id, $lockMode = null, $lockVersion = null)
- * @method User|null findOneBy(array $criteria, array $orderBy = null)
- * @method User[]    findAll()
- * @method User[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
- */
-class UserRepository extends ServiceEntityRepository
+class UserRepository extends CommonRepository
 {
-    public function __construct(RegistryInterface $registry)
+    /** @var string  */
+    protected $class = User::class;
+    
+    /** @var string  */
+    protected $modelClass = UserModel::class;
+    
+    public function add(User $user): void
     {
-        parent::__construct($registry, User::class);
+        $this->entityManager()->persist($user);
+        $this->entityManager()->flush();
+    }
+    
+    public function findOneByEmail(string $email): ?UserModel
+    {
+        return $this->createView('user')
+            ->andWhere('user.email = :email')
+            ->setMaxResults(1)
+            ->setParameter('email', $email)
+            ->getQuery()
+            ->getOneOrNullResult()
+        ;
+    }
+    
+    public function createView(string $alias): QueryBuilder
+    {
+        $model = sprintf(
+            'NEW %1$s(%2$s.id, %2$s.email, %2$s.registrationDate)',
+            $this->modelClass,
+            $alias
+        );
+    
+        return $this->createQueryBuilder($alias)->select($model);
     }
 }

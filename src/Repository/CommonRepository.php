@@ -10,7 +10,8 @@ use Symfony\Bridge\Doctrine\RegistryInterface;
 
 abstract class CommonRepository extends ServiceEntityRepository
 {
-    protected $class = '';
+    /** @var string */
+    protected $class;
     
     public function __construct(RegistryInterface $registry)
     {

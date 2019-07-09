@@ -8,7 +8,10 @@ use Doctrine\ORM\QueryBuilder;
 
 final class PostRepository extends CommonRepository
 {
+    /** @var string  */
     protected $class = Post::class;
+    
+    /** @var string  */
     protected $modelClass = PostModel::class;
     
     public function findOneById(int $id): ?PostModel

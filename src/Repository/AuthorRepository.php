@@ -8,7 +8,10 @@ use Doctrine\ORM\QueryBuilder;
 
 final class AuthorRepository extends CommonRepository
 {
+    /** @var string  */
     protected $class = Author::class;
+    
+    /** @var string  */
     protected $modelClass = AuthorModel::class;
     
     public function findOneById(int $id): ?AuthorModel

@@ -8,7 +8,10 @@ use Doctrine\ORM\QueryBuilder;
 
 final class TagRepository extends CommonRepository
 {
+    /** @var string  */
     protected $class = Tag::class;
+    
+    /** @var string  */
     protected $modelClass = TagModel::class;
     
     public function findOneById(int $id): ?TagModel

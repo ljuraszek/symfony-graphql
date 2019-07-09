@@ -8,6 +8,12 @@ Mutation:
           input:
             type: UpdatePostInput!
         resolve: "@=mutation('update_post', [args['input']['id'], args['input']['topic'], args['input']['content']])"
+      RegisterUser:
+        type: User!
+        args:
+          input:
+            type: RegisterUserInput
+        resolve: "@=mutation('register_user', [args['input']['email'], args['input']['password']])"
 
 UpdatePostInput:
   type: input-object
@@ -18,4 +24,13 @@ UpdatePostInput:
       topic:
         type: String!
       content:
+        type: String!
+        
+RegisterUserInput:
+  type: input-object
+  config:
+    fields:
+      email:
+        type: String!
+      password:
         type: String!
