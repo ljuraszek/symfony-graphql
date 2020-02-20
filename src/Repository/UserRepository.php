@@ -5,8 +5,10 @@ namespace App\Repository;
 use App\Entity\User;
 use App\Repository\Query\Model\UserModel;
 use Doctrine\ORM\QueryBuilder;
+use Symfony\Bridge\Doctrine\Security\User\UserLoaderInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 
-class UserRepository extends CommonRepository
+class UserRepository extends CommonRepository implements UserLoaderInterface
 {
     /** @var string  */
     protected $class = User::class;
@@ -40,5 +42,16 @@ class UserRepository extends CommonRepository
         );
     
         return $this->createQueryBuilder($alias)->select($model);
+    }
+    
+    public function loadUserByUsername($username)
+    {
+        return $this->createView('user')
+                    ->andWhere('user.email = :email')
+                    ->setMaxResults(1)
+                    ->setParameter('email', 'test@email.com')
+                    ->getQuery()
+                    ->getOneOrNullResult()
+            ;
     }
 }

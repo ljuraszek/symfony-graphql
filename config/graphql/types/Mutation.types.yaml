@@ -14,6 +14,12 @@ Mutation:
           input:
             type: RegisterUserInput
         resolve: "@=mutation('register_user', [args['input']['email'], args['input']['password']])"
+      LoginUser:
+        type: Token!
+        args:
+          input:
+            type: RegisterUserInput
+        resolve: "@=mutation('login_user', [args['input']['email'], args['input']['password']])"
 
 UpdatePostInput:
   type: input-object

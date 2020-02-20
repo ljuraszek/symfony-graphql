@@ -4,11 +4,12 @@ namespace App\Entity;
 
 use DateTime;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
  */
-class User
+class User implements UserInterface
 {
     /**
      * @var int|null
@@ -74,4 +75,31 @@ class User
     {
         $this->token = 'sdaf';
     }
+    
+    public function getRoles()
+    {
+        return [];
+    }
+    
+    public function getPassword()
+    {
+        return '';
+    }
+    
+    public function getSalt()
+    {
+        // TODO: Implement getSalt() method.
+    }
+    
+    public function getUsername()
+    {
+        return 'stefan';
+    }
+    
+    public function eraseCredentials()
+    {
+        return;
+    }
+    
+    
 }

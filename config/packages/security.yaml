@@ -1,10 +1,19 @@
 security:
-    encoders:
-        App\Entity\User:
-            algorithm: argon2i
-    firewalls:
-        dev:
-            pattern: ^/(_(profiler|wdt)|css|images|js)/
-            security: false
-        main:
-            anonymous: true
+  encoders:
+    App\Entity\User:
+      algorithm: argon2i
+  providers:
+    db_provider:
+      entity:
+        class: App\Entity\User
+  firewalls:
+    dev:
+      pattern: ^/(_(profiler|wdt)|css|images|js)/
+      security: false
+    main:
+      pattern: /
+      stateless: true
+      anonymous: true
+      guard:
+        authenticators:
+          - lexik_jwt_authentication.jwt_token_authenticator
